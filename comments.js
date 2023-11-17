@@ -1,4 +1,3 @@
-// Purpose: Create a simple web server that returns a JSON file
 // Create Web Server: node server.js
 // Test: http://localhost:3000/comments
 
