@@ -1,31 +1,41 @@
-// Create Web Server: node server.js
-// Test: http://localhost:3000/comments
+// Create Web Server using Express.js
+// Run using nodemon
 
-// Load the http module to create an http server.
-var http = require('http');
-var fs = require('fs');
-var url = require('url');
+const express = require('express');
+const bodyParser = require('body-parser');
+const app = express();
+const port = 3000;
 
-// Configure our HTTP server to respond with Hello World to all requests.
-var server = http.createServer(function (request, response) {
-    var url_parts = url.parse(request.url);
-    console.log(url_parts);
-    if(url_parts.pathname == '/comments') {
-        // Read comments from file
-        fs.readFile('comments.json', function(err, data) {
-            if(err) {
-                console.log(err);
-                response.writeHead(400, {'Content-Type': 'text/plain'});
-                response.end('Error reading comments file');
-            } else {
-                response.writeHead(200, {'Content-Type': 'application/json'});
-                response.end(data);
-            }
-        });
-    } else {
-        response.writeHead(200, {'Content-Type': 'text/plain'});
-        response.end('Hello World!\n');
-    }
+// Use body-parser middleware
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+// Get comments
+app.get('/comments', (req, res) => {
+    console.log('GET /comments');
+    res.json({ comments: 'GET /comments' });
 });
 
-// Listen on port 3000, IP defaults to
+// Create comment
+app.post('/comments', (req, res) => {
+    console.log('POST /comments');
+    console.log(req.body);
+    res.json({ comments: 'POST /comments' });
+});
+
+// Update comment
+app.put('/comments/:id', (req, res) => {
+    console.log('PUT /comments/:id');
+    console.log(req.body);
+    res.json({ comments: 'PUT /comments/:id' });
+});
+
+// Delete comment
+app.delete('/comments/:id', (req, res) => {
+    console.log('DELETE /comments/:id');
+    console.log(req.body);
+    res.json({ comments: 'DELETE /comments/:id' });
+});
+
+// Start server
+app.listen(port, () => console.log(`Server listening on port ${port}!`));
